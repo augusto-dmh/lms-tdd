@@ -1,0 +1,6 @@
+<ul>
+    @foreach($courses as $course)
+        <li>{{ $course->title }}</li>
+        <li>{{ $course->description }}</li>
+    @endforeach
+</ul>

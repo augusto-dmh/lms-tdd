@@ -1,6 +1,6 @@
 ## Guest can
-* see courses overview
-* see course details
+* see courses overview (page) X
+* see course details (page)
 * purchase a course
 
 ## Member can

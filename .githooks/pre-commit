@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Running Laravel Pint..."
+
+if command -v composer >/dev/null 2>&1; then
+  if composer lint:check 2>/dev/null; then
+    exit 0
+  fi
+fi
+
+if [ -f "./vendor/bin/pint.bat" ]; then
+  ./vendor/bin/pint.bat --test
+  exit 0
+fi
+
+echo "Error: PHP not found in PATH or Pint not installed." >&2
+echo "Please ensure PHP is installed and accessible, then run 'composer install'." >&2
+exit 1

@@ -10,7 +10,8 @@ class Course extends Model
 {
     use HasFactory;
 
-    public function scopeReleased(Builder $q): Builder {
+    public function scopeReleased(Builder $q): Builder
+    {
         return $q->whereNotNull('released_at');
     }
 }

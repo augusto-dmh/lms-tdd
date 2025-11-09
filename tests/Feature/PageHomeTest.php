@@ -1,12 +1,11 @@
 <?php
 
+use App\Models\Course;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\get;
 use function Pest\Laravel\withoutExceptionHandling;
-
-use App\Models\Course;
-use Carbon\Carbon;
 
 uses(RefreshDatabase::class);
 
@@ -39,7 +38,6 @@ it('shows only released courses', function () {
         ->assertDontSeeText($notReleasedCourse->title);
 });
 
-
 it('shows courses by release date', function () {
     // Arrange
     $course = Course::factory()->released(Carbon::yesterday())->create();
@@ -49,6 +47,6 @@ it('shows courses by release date', function () {
     get(route('home'))
         ->assertSeeInOrder([
             $newestCourse->title,
-            $course->title
+            $course->title,
         ]);
 });

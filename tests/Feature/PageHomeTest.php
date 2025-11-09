@@ -14,41 +14,41 @@ it('sees courses overview', function () {
     withoutExceptionHandling();
 
     // Arrange
-    Course::factory()->create(['title' => 'Course A', 'description' => 'Description A', 'released_at' => Carbon::now()]);
-    Course::factory()->create(['title' => 'Course B', 'description' => 'Description B', 'released_at' => Carbon::now()]);
+    $firstCourse = Course::factory()->released()->create();
+    $lastCourse = Course::factory()->released()->create();
 
     // Act & Assert
     get(route('home'))->dump()
         ->assertSeeText([
-            'Course A',
-            'Description A',
-            'Course B',
-            'Description B',
+            $firstCourse->title,
+            $firstCourse->description,
+            $lastCourse->title,
+            $lastCourse->description,
         ])
         ->assertOk();
 });
 
 it('shows only released courses', function () {
     // Arrange
-    Course::factory()->create(['title' => 'Released', 'released_at' => Carbon::now()]);
-    Course::factory()->create(['title' => 'Not Released']);
+    $releasedCourse = Course::factory()->released()->create();
+    $notReleasedCourse = Course::factory()->create();
 
     // Act & Assert
     get(route('home'))
-        ->assertSeeText('Released')
-        ->assertDontSeeText('Not Released');
+        ->assertSeeText($releasedCourse->title)
+        ->assertDontSeeText($notReleasedCourse->title);
 });
 
 
 it('shows courses by release date', function () {
     // Arrange
-    Course::factory()->create(['title' => 'Released Yesterday', 'released_at' => Carbon::yesterday()]);
-    Course::factory()->create(['title' => 'Released Today', 'released_at' => Carbon::now()]);
+    $course = Course::factory()->released(Carbon::yesterday())->create();
+    $newestCourse = Course::factory()->released(Carbon::today())->create();
 
     // Act & Assert
     get(route('home'))
         ->assertSeeInOrder([
-            'Released Today',
-            'Released Yesterday'
+            $newestCourse->title,
+            $course->title
         ]);
 });

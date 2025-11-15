@@ -14,7 +14,7 @@ it('does not find unreleased courses', function () {
     $unreleasedCourse = Course::factory()->create();
 
     // Assert & Act
-    get(route('course-details', $unreleasedCourse))
+    get(route('pages.course-details', $unreleasedCourse))
         ->assertNotFound();
 });
 
@@ -25,7 +25,7 @@ it('shows course details', function () {
     $course = Course::factory()->released()->create();
 
     // Act & Assert
-    get(route('course-details', $course))
+    get(route('pages.course-details', $course))
         ->assertSeeText([
             $course->title,
             $course->description,
@@ -44,7 +44,7 @@ it('shows course video count', function () {
         ->load('videos');
 
     // Act & Assert
-    get(route('course-details', $course))
+    get(route('pages.course-details', $course))
         ->assertSeeText('3 videos')
         ->assertViewHas(
             'course',

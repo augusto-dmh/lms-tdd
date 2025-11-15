@@ -3,7 +3,7 @@
 <p>{{ $course->description }}</p>
 <p>{{ $course->tagline }}</p>
 
-<p>{{ count($course->videos) }} videos</p>
+<p>{{ $course->videos_count }} videos</p>
 
 <ul>
     @foreach($course->learnings as $learning)

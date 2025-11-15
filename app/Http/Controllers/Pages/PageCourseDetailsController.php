@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pages;
 
+use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,6 +18,8 @@ class PageCourseDetailsController extends Controller
             throw new NotFoundHttpException;
         }
 
-        return view('course-details', compact('course'));
+        $course->loadCount('videos');
+
+        return view('pages.course-details', compact('course'));
     }
 }

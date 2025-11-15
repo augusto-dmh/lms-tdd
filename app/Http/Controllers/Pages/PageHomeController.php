@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pages;
 
+use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,6 @@ class PageHomeController extends Controller
             ->orderBy('released_at', 'desc')
             ->get();
 
-        return view('home', compact('courses'));
+        return view('pages.home', compact('courses'));
     }
 }

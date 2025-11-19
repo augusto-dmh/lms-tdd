@@ -12,11 +12,6 @@
                     @foreach($purchasedCourses as $purchasedCourse)
                         <li>
                             <p>{{ $purchasedCourse->title }}</p>
-                            @foreach($purchasedCourse->videos as $video)
-                                <a href="{{ $video->link }}">
-                                    {{ $video->title }}
-                                </a>
-                            @endforeach
                         </li>
                     @endforeach
                 </ul>

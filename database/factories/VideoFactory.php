@@ -18,7 +18,6 @@ class VideoFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence,
-            'link' => 'http://some-link.com',
         ];
     }
 }

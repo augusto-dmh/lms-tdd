@@ -63,6 +63,7 @@ class User extends Authenticatable
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'purchased_courses')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->orderByPivot('created_at', 'desc');
     }
 }

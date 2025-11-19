@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Course;
+use App\Models\User;
 use App\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -30,4 +31,15 @@ it('has relationship with videos', function () {
         ->videos
         ->each(fn (Video $v) => expect($v instanceof Video && $v->course_id === $course->id)->toBe(true),
         );
+});
+
+it('belongs to many users', function () {
+    // Arrange
+    $course = Course::factory()->hasAttached(User::factory()->count(2))->create();
+
+    // Act & Assert
+    expect($course->users)
+        ->toHaveCount(2)
+        ->each
+        ->toBeInstanceOf(User::class);
 });

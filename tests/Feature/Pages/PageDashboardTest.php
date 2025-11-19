@@ -2,6 +2,8 @@
 
 use App\Models\Course;
 use App\Models\User;
+use App\Models\Video;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -33,4 +35,45 @@ it('lists purchased courses', function () {
             'Course A',
             'Course B',
         ]);
+});
+
+it('shows latest purchased course first', function () {
+    // Arrange
+    $user = User::factory()
+        ->hasAttached(
+            Course::factory()->state(new Sequence(
+                ['title' => 'Course Purchased Yesterday'],
+                ['title' => 'Course Purchased Today'],
+            ))->released()->count(2),
+            new Sequence(
+                ['created_at' => Carbon::yesterday()],
+                ['created_at' => Carbon::now()],
+            ),
+            'courses'
+        )
+        ->create();
+
+    // Act & Assert
+    actingAs($user)
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertSeeTextInOrder([
+            'Course Purchased Today',
+            'Course Purchased Yesterday',
+        ]);
+});
+
+it('includes link to product videos', function () {
+    // Arrange
+    $course = Course::factory()
+        ->hasAttached(User::factory())
+        ->has(Video::factory()->state(
+            ['link' => 'http://some-link.com']
+        ))
+        ->create();
+
+    // Act & Assert
+    actingAs($course->users->first())
+        ->get(route('dashboard'))
+        ->assertSee('http://some-link.com');
 });

@@ -2,12 +2,9 @@
 
 use App\Models\Course;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\get;
 use function Pest\Laravel\withoutExceptionHandling;
-
-uses(RefreshDatabase::class);
 
 it('sees courses overview', function () {
     withoutExceptionHandling();

@@ -2,9 +2,6 @@
 
 use App\Models\Course;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 it('can create a released course by a state', function () {
     // Arrange

@@ -1,14 +1,9 @@
 <?php
 
 use App\Models\Course;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\withoutExceptionHandling;
-
-uses(RefreshDatabase::class);
 
 it('gives back successful response for home page', function () {
     withoutExceptionHandling();
@@ -29,7 +24,7 @@ it('gives back successful response for course details page', function () {
 
 it('gives back succesful response for dashboard page', function () {
     // Act & Assert
-    actingAs(User::factory()->create())
-        ->get(route('dashboard'))
+    loginAsUser()
+        ->get(route('pages.dashboard'))
         ->assertOk();
 });

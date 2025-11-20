@@ -1,7 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
+
+use function Pest\Laravel\actingAs;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +18,7 @@ use Tests\TestCase;
 |
 */
 
-uses(TestCase::class, RefreshDatabase::class)->in('Feature');
+uses(TestCase::class, LazilyRefreshDatabase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +46,9 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function loginAsUser(?Authenticatable $user = null): TestCase
 {
-    // ..
+    $user = $user ?? User::factory()->create();
+
+    return actingAs($user);
 }

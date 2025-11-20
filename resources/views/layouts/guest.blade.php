@@ -19,6 +19,13 @@
     </head>
     <body>
         <div class="font-sans text-gray-900 antialiased">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-end space-x-4">
+                <a href="{{ route('login') }}" class="text-sm text-gray-700">Log in</a>
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}" class="text-sm text-gray-700">Register</a>
+                @endif
+            </div>
+
             {{ $slot }}
         </div>
 

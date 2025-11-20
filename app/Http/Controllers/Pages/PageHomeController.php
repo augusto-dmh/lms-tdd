@@ -13,11 +13,13 @@ class PageHomeController extends Controller
      */
     public function __invoke(Request $request)
     {
+        $layout = auth()->check() ? 'app-layout' : 'guest-layout';
+
         $courses = Course::query()
             ->released()
             ->orderBy('released_at', 'desc')
             ->get();
 
-        return view('pages.home', compact('courses'));
+        return view('pages.home', compact('layout', 'courses'));
     }
 }

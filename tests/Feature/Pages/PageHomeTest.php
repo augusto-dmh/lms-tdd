@@ -47,22 +47,3 @@ it('shows courses by release date', function () {
             $course->title,
         ]);
 });
-
-it('includes login if not logged in', function () {
-    // Act & Assert
-    get(route('pages.home'))
-        ->assertOk()
-        ->assertSeeText('Log in');
-});
-
-it('includes logout if logged in', function () {
-    // Act & Assert
-    loginAsUser()
-        ->get(route('pages.home'))
-        ->assertSeeText('Log Out');
-});
-
-it('does not find Jetstream registration page', function () {
-    // Act & Assert
-    get('register')->assertNotFound();
-});

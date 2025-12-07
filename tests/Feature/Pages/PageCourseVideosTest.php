@@ -4,6 +4,7 @@ use App\Livewire\VideoPlayer;
 use App\Models\Course;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Livewire\Livewire;
 
 use function Pest\Laravel\get;
 
@@ -18,7 +19,9 @@ it('cannot be accessed by guest', function () {
 
 it('includes video player', function () {
     // Arrange
-    $course = Course::factory()->create();
+    $course = Course::factory()
+        ->has(Video::factory())
+        ->create();
 
     // Act & Assert
     loginAsUser()
@@ -57,4 +60,34 @@ it('shows provided course video', function () {
         ]))
         ->assertOk()
         ->assertSeeText('Second Video');
+});
+
+it('shows details for given video', function () {
+    // Arrange
+    $course = Course::factory()
+        ->has(Video::factory()->state([
+            'title' => 'Video title',
+            'description' => 'Video description',
+            'duration' => 10,
+        ]))->create();
+
+    // Act & Assert
+    Livewire::test(VideoPlayer::class, ['video' => $course->videos->first()])
+        ->assertSeeText([
+            'Video title',
+            'Video description',
+            '10min'
+        ]);
+});
+
+it('shows given video', function () {
+    // Arrange
+    $course = Course::factory()
+        ->has(Video::factory()->state([
+            'vimeo_id' => 'vimeo-id',
+        ]))->create();
+
+    // Act & Assert
+    Livewire::test(VideoPlayer::class, ['video' => $course->videos->first()])
+        ->assertSee('<iframe src="https://player.vimeo.com/video/vimeo-id"', false);
 });

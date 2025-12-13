@@ -60,6 +60,12 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function videos(): BelongsToMany
+    {
+        return $this->belongsToMany(Video::class, 'watched_videos')
+            ->withTimestamps();
+    }
+
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'purchased_courses')

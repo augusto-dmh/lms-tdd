@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Course;
+use App\Models\User;
 use App\Models\Video;
 
 it('gives back readable video duration', function () {
@@ -20,4 +21,14 @@ it('belongs to a course', function () {
 
     expect($video->course)
         ->toBeInstanceOf(Course::class);
+});
+
+it('belongs to many users', function () {
+    $video = Video::factory()
+        ->hasAttached(User::factory()->count(2))
+        ->create();
+
+    expect($video->users)
+        ->toHaveCount(2)
+        ->each->toBeInstanceOf(User::class);
 });

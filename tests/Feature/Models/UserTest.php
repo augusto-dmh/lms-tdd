@@ -2,6 +2,7 @@
 
 use App\Models\Course;
 use App\Models\User;
+use App\Models\Video;
 
 it('has courses', function () {
     // Arrange
@@ -14,4 +15,16 @@ it('has courses', function () {
         ->toHaveCount(2)
         ->each
         ->toBeInstanceOf(Course::class);
+});
+
+it('has videos', function () {
+    // Arrange
+    $user = User::factory()
+        ->has(Video::factory()->count(2))
+        ->create();
+
+    // Assert & Act
+    expect($user->videos)
+        ->toHaveCount(2)
+        ->each->toBeInstanceOf(Video::class);
 });

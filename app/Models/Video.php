@@ -17,7 +17,7 @@ class Video extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function users(): BelongsToMany
+    public function watchers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'watched_videos')
             ->withTimestamps();

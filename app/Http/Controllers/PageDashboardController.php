@@ -9,7 +9,7 @@ class PageDashboardController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $purchasedCourses = Auth::user()->courses;
+        $purchasedCourses = Auth::user()->purchasedCourses;
 
         return view('dashboard', compact('purchasedCourses'));
     }

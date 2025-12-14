@@ -25,10 +25,10 @@ it('belongs to a course', function () {
 
 it('belongs to many users', function () {
     $video = Video::factory()
-        ->hasAttached(User::factory()->count(2))
+        ->hasAttached(User::factory()->count(2), relationship: 'watchers')
         ->create();
 
-    expect($video->users)
+    expect($video->watchers)
         ->toHaveCount(2)
         ->each->toBeInstanceOf(User::class);
 });

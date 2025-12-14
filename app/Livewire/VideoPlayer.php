@@ -23,11 +23,11 @@ class VideoPlayer extends Component
 
     public function markVideoAsCompleted(): void
     {
-        auth()->user()->videos()->syncWithoutDetaching($this->video);
+        auth()->user()->watchedVideos()->syncWithoutDetaching($this->video);
     }
 
     public function markVideoAsNotCompleted(): void
     {
-        auth()->user()->videos()->detach($this->video);
+        auth()->user()->watchedVideos()->detach($this->video);
     }
 }

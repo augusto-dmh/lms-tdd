@@ -7,10 +7,16 @@ use App\Models\Video;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
+function createCourseAndVideos(int $videosCount = 1): Course
+{
+    return Course::factory()
+        ->has(Video::factory()->count($videosCount))
+        ->create();
+}
+
 it('shows details for given video', function () {
     // Arrange
-    $course = Course::factory()
-        ->has(Video::factory())->create();
+    $course = createCourseAndVideos();
 
     // Act & Assert
     $video = $course->videos->first();
@@ -24,8 +30,7 @@ it('shows details for given video', function () {
 
 it('shows given video', function () {
     // Arrange
-    $course = Course::factory()
-        ->has(Video::factory())->create();
+    $course = createCourseAndVideos();
 
     // Act & Assert
     $video = $course->videos->first();
@@ -35,9 +40,7 @@ it('shows given video', function () {
 
 it('shows list of all course videos', function () {
     // Arrange
-    $course = Course::factory()
-        ->has(Video::factory()->count(2))
-        ->create();
+    $course = createCourseAndVideos(videosCount: 2);
 
     // Act & Assert
     Livewire::test(VideoPlayer::class, ['video' => $course->videos()->first()])
@@ -45,17 +48,21 @@ it('shows list of all course videos', function () {
             ...$course->videos->pluck('title')
         ])
         ->assertSeeHtml([
-            route('page.course-videos', $course->videos[0]),
             route('page.course-videos', $course->videos[1]),
         ]);
+});
+
+it('does not include route for current video', function () {
+    $course = createCourseAndVideos(videosCount: 2);
+
+    Livewire::test(VideoPlayer::class, ['video' => $course->videos()->first()])
+        ->assertDontSeeHtml(route('page.course-videos', $course->videos()->first()));
 });
 
 it('marks video as completed', function () {
     // Arrange
     $user = User::factory()->create();
-    $course = Course::factory()
-        ->has(Video::factory())
-        ->create();
+    $course = createCourseAndVideos();
 
     $user->purchasedCourses()->attach($course);
 

@@ -2,6 +2,11 @@
     <iframe src="https://player.vimeo.com/video/{{ $video->vimeo_id }}" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
     <h3>{{ $video->title }}</h3>
     <p>{{ $video->description }} ({{ $video->getReadableDuration() }})</p>
+    @if(auth()->user()->watchedVideos()->where('video_id', $video->id)->exists())
+        <button wire:click="markVideoAsNotCompleted">Mark as not completed</button>
+    @else
+        <button wire:click="markVideoAsCompleted">Mark as completed</button>
+    @endif
 
     <ul>
         @foreach($courseVideos as $courseVideo)

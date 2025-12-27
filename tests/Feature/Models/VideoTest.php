@@ -3,6 +3,7 @@
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\WatchedVideo;
 
 it('gives back readable video duration', function () {
     // Arrange
@@ -31,4 +32,21 @@ it('belongs to many users', function () {
     expect($video->watchers)
         ->toHaveCount(2)
         ->each->toBeInstanceOf(User::class);
+});
+
+it('tells if it has been watched by current user', function () {
+    // Arrange
+    $user = User::factory()->create();
+
+    $watchedVideo = Video::factory()
+        ->hasAttached($user, relationship: 'watchers')
+        ->create();
+    $unwatchedVideo = Video::factory()->create();
+
+    // Act & Assert
+    loginAsUser($user);
+    expect($watchedVideo->alreadyWatchedByCurrentUser())
+        ->toBe(true);
+    expect($unwatchedVideo->alreadyWatchedByCurrentUser())
+        ->toBe(false);
 });

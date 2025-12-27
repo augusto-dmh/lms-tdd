@@ -14,6 +14,11 @@ function createCourseAndVideos(int $videosCount = 1): Course
         ->create();
 }
 
+beforeEach(function () {
+    $this->loggedInUser = User::factory()->create();
+    loginAsUser($this->loggedInUser);
+});
+
 it('shows details for given video', function () {
     // Arrange
     $course = createCourseAndVideos();
@@ -61,52 +66,50 @@ it('does not include route for current video', function () {
 
 it('marks video as completed', function () {
     // Arrange
-    $user = User::factory()->create();
     $course = createCourseAndVideos();
 
-    $user->purchasedCourses()->attach($course);
+    $this->loggedInUser->purchasedCourses()->attach($course);
 
     // Assert
-    expect($user->watchedVideos)->toHaveCount(0);
+    expect($this->loggedInUser->watchedVideos)->toHaveCount(0);
 
     // Act & Assert
-    loginAsUser($user);
+    loginAsUser($this->loggedInUser);
     Livewire::test(VideoPlayer::class, ['video' => $course->videos()->first()])
         ->assertMethodWired('markVideoAsCompleted')
         ->call('markVideoAsCompleted')
         ->assertMethodNotWired('markVideoAsCompleted')
         ->assertMethodWired('markVideoAsNotCompleted');
-    $user->refresh();
+    $this->loggedInUser->refresh();
 
     // Assert
-    expect($user->watchedVideos)
+    expect($this->loggedInUser->watchedVideos)
         ->toHaveCount(1)
         ->first()->title->toEqual($course->videos()->first()->title);
 });
 
 it('marks video as not completed', function () {
     // Arrange
-    $user = User::factory()->create();
     $course = Course::factory()
         ->has(
             Video::factory()
-                ->hasAttached($user, relationship: 'watchers')
+                ->hasAttached($this->loggedInUser, relationship: 'watchers')
         )
         ->create();
 
     // Assert
-    expect($user->watchedVideos)->toHaveCount(1);
+    expect($this->loggedInUser->watchedVideos)->toHaveCount(1);
 
     // Act
-    loginAsUser($user);
+    loginAsUser($this->loggedInUser);
     Livewire::test(VideoPlayer::class, ['video' => $course->videos()->first()])
         ->assertMethodWired('markVideoAsNotCompleted')
         ->call('markVideoAsNotCompleted')
         ->assertMethodNotWired('markVideoAsNotCompleted')
         ->assertMethodWired('markVideoAsCompleted');
 
-    $user->refresh();
+    $this->loggedInUser->refresh();
 
     // Assert
-    expect($user->watchedVideos)->toHaveCount(0);
+    expect($this->loggedInUser->watchedVideos)->toHaveCount(0);
 });

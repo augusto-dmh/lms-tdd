@@ -18,6 +18,7 @@ class AddGivenCoursesSeeder extends Seeder
             ['slug' => Str::of('Laravel For Beginners')->slug()],
             [
                 'title' => 'Laravel For Beginners',
+                'paddle_product_id' => '123123',
                 'tagline' => 'Make your first steps as a Laravel dev.',
                 'description' => 'A video course to teach you Laravel from scratch. We will cover the basics and build a real app.',
                 'image_name' => 'laravel_for_beginners.png',
@@ -34,6 +35,7 @@ class AddGivenCoursesSeeder extends Seeder
             ['slug' => Str::of('Advanced Laravel')->slug()],
             [
                 'title' => 'Advanced Laravel',
+                'paddle_product_id' => '123123',
                 'tagline' => 'Level up as a Laravel developer.',
                 'description' => 'A video course to teach you advanced techniques in Laravel',
                 'image_name' => 'advanced_laravel.png',
@@ -50,6 +52,7 @@ class AddGivenCoursesSeeder extends Seeder
             ['slug' => Str::of('TDD The Laravel Way')->slug()],
             [
                 'title' => 'TDD The Laravel Way',
+                'paddle_product_id' => '123123',
                 'tagline' => 'Learn to build Laravel apps with TDD.',
                 'description' => 'A hands-on course on Test Driven Development in Laravel.',
                 'image_name' => 'tdd_the_laravel_way.png',

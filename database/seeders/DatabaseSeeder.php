@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,10 @@ class DatabaseSeeder extends Seeder
             AddGivenVideosSeeder::class,
             AddLocalTestUserSeeder::class,
         ]);
+
+        if (App::environment('production')) {
+            return;
+        }
 
         $testUser = User::query()->first();
         $courses = Course::query()->get();

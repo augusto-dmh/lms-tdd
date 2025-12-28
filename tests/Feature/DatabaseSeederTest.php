@@ -111,3 +111,19 @@ it('does not add test user for production', function () {
     // Assert
     assertDatabaseCount(User::class, 0);
 });
+
+it('attaches to the test user default purchased courses and watched videos', function () {
+    // Act
+    artisan('db:seed');
+
+    // Arrange
+    $user = User::query()->first();
+
+    // Assert
+    expect($user)
+        ->purchasedCourses
+        ->toHaveCount(3);
+    expect($user)
+        ->watchedVideos
+        ->toHaveCount(8);
+});

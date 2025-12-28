@@ -53,7 +53,7 @@ it('shows list of all course videos', function () {
             ...$course->videos->pluck('title')
         ])
         ->assertSeeHtml([
-            route('page.course-videos', $course->videos[1]),
+            route('page.course-videos', ['course' => $course, 'video' => $course->videos[1]]),
         ]);
 });
 

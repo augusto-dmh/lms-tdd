@@ -12,7 +12,7 @@
         @foreach($courseVideos as $courseVideo)
             <li>
                 @if($this->video->id !== $courseVideo->id)
-                    <a href="{{ route('page.course-videos', $courseVideo) }}">{{ $courseVideo->title }}</a>
+                    <a href="{{ route('page.course-videos', ['course' => $courseVideo->course, 'video' => $courseVideo]) }}">{{ $courseVideo->title }}</a>
                 @else
                     {{ $courseVideo->title }}
                 @endif

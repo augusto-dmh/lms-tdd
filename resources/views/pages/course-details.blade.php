@@ -13,3 +13,9 @@
 </ul>
 
 <img src="{{ asset("images/$course->image_name") }}" alt='Thumbnail of the course "{{ $course->title }}"'>
+
+<script src="https://cdn.paddle.com/paddle/paddle.js"></script>
+<script type="text/javascript">
+	Paddle.Setup({ vendor: {{ config('services.paddle.vendor_id') }} });
+</script>
+<a href="#!" class="paddle_button" data-product="{{ $course->paddle_product_id }}">Buy Now!</a>

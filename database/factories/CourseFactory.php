@@ -20,6 +20,7 @@ class CourseFactory extends Factory
         return [
             'title' => $this->faker->sentence,
             'paddle_product_id' => $this->faker->uuid,
+            'paddle_price_id' => $this->faker->uuid,
             'slug' => $this->faker->slug,
             'description' => $this->faker->paragraph,
             'tagline' => $this->faker->sentence,

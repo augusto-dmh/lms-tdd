@@ -18,7 +18,8 @@ class AddGivenCoursesSeeder extends Seeder
             ['slug' => Str::of('Laravel For Beginners')->slug()],
             [
                 'title' => 'Laravel For Beginners',
-                'paddle_product_id' => '123123',
+                'paddle_product_id' => 'pro_01kdtfteq7x3kchzvkknkd5g2q',
+                'paddle_price_id' => 'pri_01kdtq6kkjah0bzy6hh0txmqhe',
                 'tagline' => 'Make your first steps as a Laravel dev.',
                 'description' => 'A video course to teach you Laravel from scratch. We will cover the basics and build a real app.',
                 'image_name' => 'laravel_for_beginners.png',

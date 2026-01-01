@@ -12,10 +12,22 @@
     <li></li>
 </ul>
 
-<img src="{{ asset("images/$course->image_name") }}" alt='Thumbnail of the course "{{ $course->title }}"'>
+<img src="{{ asset("images/{$course->image_name}") }}" alt='Thumbnail of the course "{{ $course->title }}"'>
 
-<script src="https://cdn.paddle.com/paddle/paddle.js"></script>
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <script type="text/javascript">
-	Paddle.Setup({ vendor: {{ config('services.paddle.vendor_id') }} });
+    Paddle.Environment.set("sandbox");
+    Paddle.Initialize({
+        token: @json(config('services.paddle.client_token')),
+    });
+
+    function openCheckout() {
+        Paddle.Checkout.open({
+            items: [{
+                priceId: @json($course->paddle_price_id),
+                quantity: 1
+            }],
+        });
+    }
 </script>
-<a href="#!" class="paddle_button" data-product="{{ $course->paddle_product_id }}">Buy Now!</a>
+<a href="#" onclick="openCheckout()">Buy Now!</a>

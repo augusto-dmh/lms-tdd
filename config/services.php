@@ -32,6 +32,6 @@ return [
     ],
 
     'paddle' => [
-        'vendor_id' => env('PADDLE_VENDOR_ID'),
+        'client_token' => env('PADDLE_CLIENT_TOKEN'),
     ],
 ];

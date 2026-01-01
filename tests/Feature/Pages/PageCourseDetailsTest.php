@@ -53,17 +53,27 @@ it('shows course video count', function () {
 
 it('includes paddle checkout button', function () {
     // Arrange
-    config()->set('services.paddle.vendor_id', 'vendor-id');
+    withoutExceptionHandling();
+    config()->set('services.paddle.client_token', 'test_163fb3f24cdb0f2hbk4zbff3eh6');
+
     $course = Course::factory()
         ->released()
-        ->create([
-            'paddle_product_id' => 'product-id',
-        ]);
+        ->state(['paddle_price_id' => 'pri_01kdasatkyahkkblzy6hh0txmqhw'])
+        ->create();
 
-    // Act & Assert
     get(route('pages.course-details', $course))
         ->assertOk()
-        ->assertSee('<script src="https://cdn.paddle.com/paddle/paddle.js"></script>', false)
-        ->assertSee("Paddle.Setup({ vendor: vendor-id });", false)
-        ->assertSee('<a href="#!" class="paddle_button" data-product="product-id">Buy Now!</a>', false);
+        ->assertSeeInOrder([
+            '<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>',
+
+            '<script type="text/javascript">',
+            'Paddle.Initialize({',
+            'token: "test_163fb3f24cdb0f2hbk4zbff3eh6"',
+
+            'function openCheckout() {',
+            'Paddle.Checkout.open({',
+            'priceId: "pri_01kdasatkyahkkblzy6hh0txmqhw"',
+
+            '<a href="#" onclick="openCheckout()">Buy Now!</a>',
+        ], false);
 });

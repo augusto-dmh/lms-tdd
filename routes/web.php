@@ -30,3 +30,5 @@ Route::middleware([
     Route::get('videos/{course:slug}/{video:slug?}', PageVideosController::class)
         ->name('page.course-videos');
 });
+
+Route::webhooks('webhooks/payments', 'payments');

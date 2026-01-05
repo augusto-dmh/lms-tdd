@@ -32,6 +32,8 @@ return [
     ],
 
     'paddle' => [
+        'api_key' => env('PADDLE_API_KEY'),
+        'base_url' => env('PADDLE_BASE_URL', 'https://api.paddle.com'),
         'client_token' => env('PADDLE_CLIENT_TOKEN'),
     ],
 ];

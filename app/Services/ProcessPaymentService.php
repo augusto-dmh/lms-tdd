@@ -6,6 +6,8 @@ use App\Models\Course;
 use App\Models\PurchasedCourse;
 use App\Models\User;
 use App\ApiClients\PaddleBillingApiClient;
+use App\Mail\PaymentSuccess;
+use Illuminate\Support\Facades\Mail;
 
 class ProcessPaymentService
 {
@@ -35,5 +37,6 @@ class ProcessPaymentService
             );
 
         $user->purchasedCourses()->attach($course);
+        Mail::to($user)->send(new PaymentSuccess());
     }
 }

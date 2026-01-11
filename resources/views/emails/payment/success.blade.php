@@ -1,10 +1,10 @@
 <x-mail::message>
-# Introduction
+# Thanks for purchasing "{{ $course->title }}"!
 
-The body of your message.
+If it is your first time just click the button below and reset your password.
 
-<x-mail::button :url="''">
-Button Text
+<x-mail::button :url="route('login')">
+Login
 </x-mail::button>
 
 Thanks,<br>

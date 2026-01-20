@@ -31,4 +31,4 @@ Route::middleware([
         ->name('page.course-videos');
 });
 
-Route::webhooks('webhooks/payments', 'payments');
+Route::webhooks('webhooks/payments', 'payments')->middleware('log.paddle.webhook');

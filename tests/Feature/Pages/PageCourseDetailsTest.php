@@ -71,8 +71,7 @@ it('includes paddle checkout button', function () {
             'token: "test_163fb3f24cdb0f2hbk4zbff3eh6"',
 
             'function openCheckout() {',
-            'Paddle.Checkout.open({',
-            'priceId: "pri_01kdasatkyahkkblzy6hh0txmqhw"',
+            'Paddle.Checkout.open(checkoutOptions);',
 
             '<a href="#" onclick="openCheckout()">Buy Now!</a>',
         ], false);

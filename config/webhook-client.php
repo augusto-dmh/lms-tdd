@@ -60,7 +60,7 @@ return [
         ],
         [
             'name' => 'payments',
-            'signing_secret' => env('PADDLE_WEBHOOK_SECRET'),
+            'signing_secret' => config('services.paddle.webhook_secret'),
             'signature_header_name' => 'Paddle-Signature',
             'signature_validator' => \App\Webhooks\PaymentSignatureValidator::class,
             'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,

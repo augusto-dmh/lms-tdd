@@ -22,12 +22,29 @@
     });
 
     function openCheckout() {
-        Paddle.Checkout.open({
-            items: [{
-                priceId: @json($course->paddle_price_id),
-                quantity: 1
-            }],
-        });
+        const authenticatedUserEmail = @json(auth()->user()?->email);
+
+        const checkoutOptions = {
+            items: [
+                {
+                    priceId: @json($course->paddle_price_id),
+                    quantity: 1
+                }
+            ],
+            customData: {
+                user: {
+                    email: authenticatedUserEmail
+                }
+            }
+        };
+
+        if (authenticatedUserEmail) {
+            checkoutOptions.customer = {
+                email: authenticatedUserEmail
+            };
+        }
+
+        Paddle.Checkout.open(checkoutOptions);
     }
 </script>
 <a href="#" onclick="openCheckout()">Buy Now!</a>

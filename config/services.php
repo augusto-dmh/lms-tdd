@@ -37,4 +37,11 @@ return [
         'client_token' => env('PADDLE_CLIENT_TOKEN'),
         'webhook_secret' => env('PADDLE_WEBHOOK_SECRET'),
     ],
+
+    'twitter' => [
+        'consumer_key' => env('TWITTER_CONSUMER_KEY'),
+        'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),
+        'access_token' => env('TWITTER_ACCESS_TOKEN'),
+        'access_token_secret' => env('TWITTER_ACCESS_TOKEN_SECRET'),
+    ],
 ];

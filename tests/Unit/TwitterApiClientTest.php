@@ -4,12 +4,30 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 use App\ApiClients\TwitterApiClient;
 
 it('calls oauth client for a tweet', function () {
-    $ouathClientMock = mock(TwitterOAuth::class);
-    $client = new TwitterApiClient($ouathClientMock);
-
-    $ouathClientMock
+    // Assert
+    /** @var TwitterOAuth&\Mockery\MockInterface $mockedTwitterOAuth */
+    $mockedTwitterOAuth = mock(TwitterOAuth::class)
         ->shouldReceive('post')
-        ->once();
+        ->once()
+        ->withArgs(['tweets', ['text' => 'My tweet message']])
+        ->andReturn(getPostSuccessReturn())
+        ->getMock();
 
-    $client->tweet('some text');
+    // Arrange
+    $client = new TwitterApiClient($mockedTwitterOAuth);
+
+    // Act & Assert
+    expect($client->tweet('My tweet message'))
+        ->toEqual(getPostSuccessReturn());
 });
+
+/** @return array{data: array{id: string, text: string}} */
+function getPostSuccessReturn(): array
+{
+    return [
+        'data' => [
+            'id' => '1346889436626259968',
+            'text' => 'My tweet message',
+        ],
+    ];
+}

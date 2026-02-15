@@ -5,6 +5,7 @@ namespace App\ApiClients;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 
+/** @codeCoverageIgnore */
 final class PaddleBillingApiClient
 {
     public function __construct(

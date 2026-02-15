@@ -3,8 +3,9 @@
 namespace App\ApiClients;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use App\Interfaces\TwitterApiClientInterface;
 
-class TwitterApiClient
+class TwitterApiClient implements TwitterApiClientInterface
 {
     public function __construct(protected TwitterOAuth $twitter) {}
 

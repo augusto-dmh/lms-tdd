@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use App\ApiClients\NullTwitterApiClient;
 use App\ApiClients\TwitterApiClient;
+use App\Interfaces\TwitterApiClientInterface;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class TwitterServiceProvider extends ServiceProvider
@@ -26,8 +29,12 @@ class TwitterServiceProvider extends ServiceProvider
             return $client;
         });
 
-        $this->app->singleton('twitter', function () {
-            return app(TwitterApiClient::class);
+        $this->app->singleton(TwitterApiClientInterface::class, function (Application $app) {
+            if ($app->environment() === 'production') {
+                return app(TwitterApiClient::class);
+            }
+
+            return new NullTwitterApiClient();
         });
     }
 

@@ -18,6 +18,7 @@ use function Pest\Laravel\actingAs;
 |
 */
 
+uses(TestCase::class)->in('Unit');
 uses(TestCase::class, LazilyRefreshDatabase::class)->in('Feature');
 
 /*

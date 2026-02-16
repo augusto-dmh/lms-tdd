@@ -85,3 +85,33 @@ it('includes courses links', function () {
             route('pages.course-details', $lastCourse),
         ]);
 });
+
+it('includes a page title', function () {
+    // Arrange
+    $expectedTitle = config('app.name') . ' - Home';
+
+    // Act & Assert
+    loginAsUser()
+        ->get(route('pages.home'))
+        ->assertOk()
+        ->assertSee("<title>$expectedTitle</title>", false);
+});
+
+it('includes social tags', function () {
+    // Arrange
+    $appName = config('app.name');
+    $description = "$appName is the leading learning platform for Laravel developers.";
+
+    // Act & Assert
+    get(route('pages.home'))
+        ->assertOk()
+        ->assertSee([
+            "<meta name=\"description\" content=\"$description\">",
+            '<meta property="og:type" content="website">',
+            '<meta property="og:url" content="' . route('pages.home') . '">',
+            "<meta property=\"og:title\" content=\"$appName\">",
+            "<meta property=\"og:description\" content=\"$description\">",
+            '<meta property="og:image" content="' . asset('images/social.png') . '">',
+            '<meta name="twitter:card" content="summary_large_image">',
+        ], false);
+});

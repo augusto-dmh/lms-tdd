@@ -2,6 +2,7 @@
 
 use App\Models\Course;
 use Carbon\Carbon;
+use Juampi92\TestSEO\TestSEO;
 
 use function Pest\Laravel\get;
 use function Pest\Laravel\withoutExceptionHandling;
@@ -91,10 +92,13 @@ it('includes a page title', function () {
     $expectedTitle = config('app.name') . ' - Home';
 
     // Act & Assert
-    loginAsUser()
-        ->get(route('pages.home'))
-        ->assertOk()
-        ->assertSee("<title>$expectedTitle</title>", false);
+    $response = get(route('pages.home'))
+        ->assertOk();
+
+    // Assertion
+    $seo = new TestSEO($response->getContent());
+    expect($seo->data->title())
+        ->toBe($expectedTitle);
 });
 
 it('includes social tags', function () {
@@ -102,16 +106,18 @@ it('includes social tags', function () {
     $appName = config('app.name');
     $description = "$appName is the leading learning platform for Laravel developers.";
 
-    // Act & Assert
-    get(route('pages.home'))
-        ->assertOk()
-        ->assertSee([
-            "<meta name=\"description\" content=\"$description\">",
-            '<meta property="og:type" content="website">',
-            '<meta property="og:url" content="' . route('pages.home') . '">',
-            "<meta property=\"og:title\" content=\"$appName\">",
-            "<meta property=\"og:description\" content=\"$description\">",
-            '<meta property="og:image" content="' . asset('images/social.png') . '">',
-            '<meta name="twitter:card" content="summary_large_image">',
-        ], false);
+    // Act
+    $response = get(route('pages.home'))
+        ->assertOk();
+
+    // Assert
+    $seo = new TestSEO($response->getContent());
+    expect($seo->data)
+        ->description()->toBe($description)
+        ->openGraph()->type->toBe('website')
+        ->openGraph()->url->toBe(route('pages.home'))
+        ->openGraph()->title->toBe($appName)
+        ->openGraph()->description->toBe($description)
+        ->openGraph()->image->toBe(asset('images/social.png'))
+        ->twitter()->card->toBe('summary_large_image');
 });

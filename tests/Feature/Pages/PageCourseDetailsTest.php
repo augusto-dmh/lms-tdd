@@ -2,6 +2,7 @@
 
 use App\Models\Course;
 use App\Models\Video;
+use Juampi92\TestSEO\TestSEO;
 
 use function Pest\Laravel\get;
 use function Pest\Laravel\withoutExceptionHandling;
@@ -82,26 +83,32 @@ it('includes a content title', function () {
     $course = Course::factory()->released()->create();
     $expectedTitle = "$course->title - " . config('app.name');
 
-    // Act & Assert
-    get(route('pages.course-details', $course))
-        ->assertOk()
-        ->assertSee("<title>$expectedTitle</title>", false);
+    // Act
+    $response = get(route('pages.course-details', $course))
+        ->assertOk();
+
+    // Assertion
+    $seo = new TestSEO($response->getContent());
+    expect($seo->data->title())
+        ->toBe($expectedTitle);
 });
 
 it('includes social tags', function () {
     // Arrange
     $course = Course::factory()->released()->create();
 
-    // Act & Assert
-    get(route('pages.course-details', $course))
-        ->assertOk()
-        ->assertSee([
-            '<meta name="description" content="' . $course->description . '">',
-            '<meta property="og:type" content="website">',
-            '<meta property="og:url" content="' . route('pages.course-details', $course) . '">',
-            '<meta property="og:title" content="' . $course->title . '">',
-            '<meta property="og:description" content="' . $course->description . '">',
-            '<meta property="og:image" content="' . asset("images/{$course->image_name}") . '">',
-            '<meta name="twitter:card" content="summary_large_image">',
-        ], false);
+    // Act
+    $response = get(route('pages.course-details', $course))
+        ->assertOk();
+
+    // Assert
+    $seo = new TestSEO($response->getContent());
+    expect($seo->data)
+        ->description()->toBe($course->description)
+        ->openGraph()->type->toBe('website')
+        ->openGraph()->url->toBe(route('pages.course-details', $course))
+        ->openGraph()->title->toBe($course->title)
+        ->openGraph()->description->toBe($course->description)
+        ->openGraph()->image->toBe(asset("images/$course->image_name"))
+        ->twitter()->card->toBe('summary_large_image');
 });
